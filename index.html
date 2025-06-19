@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puffs Century</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      overflow-x: hidden;
+    }
+
+    /* Bannière d'entrée */
+    .intro-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0A0A0A;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeOut 0.5s ease-in-out 4s forwards;
+    }
+
+    .intro-banner.hidden {
+      display: none;
+    }
+
+    .intro-banner .logo {
+      font-size: 80px;
+      color: #00D4FF;
+      text-shadow: 0 0 20px #00D4FF;
+      animation: zoomIn 2s ease-in-out;
+    }
+
+    .intro-banner .slogan {
+      font-size: 32px;
+      color: #FF007A;
+      text-shadow: 0 0 10px #FF007A;
+      margin: 20px 0;
+      animation: slideUp 2s ease-in-out 1s;
+    }
+
+    .intro-banner .enter-btn {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #8B00FF;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px #8B00FF;
+      animation: pulse 1.5s infinite;
+      text-decoration: none;
+    }
+
+    @keyframes zoomIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      0% { transform: translateY(50px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* Fond animé */
+    #background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: linear-gradient(45deg, #00D4FF, #8B00FF, #FF007A, #00D4FF);
+      background-size: 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Menu de navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px;
+      background: rgba(10, 10, 10, 0.5);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    nav .logo {
+      font-size: 24px;
+      font-weight: 600;
+      color: #00D4FF;
+      text-shadow: 0 0 10px #00D4FF;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    nav ul li a {
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 18px;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #FF007A;
+      text-shadow: 0 0 10px #FF007A;
+    }
+
+    /* Section héroïque */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      text-shadow: 0 0 20px #8B00FF;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #8B00FF; }
+      to { text-shadow: 0 0 30px #8B00FF; }
+    }
+
+    .hero p {
+      font-size: 24px;
+      margin: 20px 0;
+      color: #00D4FF;
+    }
+
+    .hero .cta {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #FF007A;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px #FF007A;
+      animation: pulse 1.5s infinite;
+      text-decoration: none;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 10px #FF007A; }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px #FF007A; }
+      100% { transform: scale(1); box-shadow: 0 0 10px #FF007A; }
+    }
+
+    /* Section produits */
+    .products {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .products h2 {
+      font-size: 48px;
+      margin-bottom: 40px;
+      color: #00D4FF;
+      text-shadow: 0 0 10px #00D4FF;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 15px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      position: relative;
+      perspective: 1000px;
+    }
+
+    .product-card:hover {
+      transform: translateY(-15px) rotateX(8deg) rotateY(8deg);
+      box-shadow: 0 0 30px #8B00FF;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .product-card h3 {
+      font-size: 24px;
+      margin: 10px 0;
+      color: #FF007A;
+      text-shadow: 0 0 5px #FF007A;
+    }
+
+    .product-card .price {
+      font-size: 18px;
+      color: #00D4FF;
+      text-shadow: 0 0 5px #00D4FF;
+      margin-bottom: 10px;
+    }
+
+    .product-card p {
+      font-size: 14px;
+      color: #FFFFFF;
+      margin-bottom: 15px;
+    }
+
+    .product-card .order-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #FF007A;
+      color: #FFFFFF;
+      border-radius: 25px;
+      text-decoration: none;
+      box-shadow: 0 0 10px #FF007A;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+      animation: sparkle 2s infinite;
+    }
+
+    .product-card .order-btn:hover {
+      background: #25D366;
+      box-shadow: 0 0 15px #25D366;
+      transform: scale(1.1);
+    }
+
+    @keyframes sparkle {
+      0% { box-shadow: 0 0 10px #FF007A; }
+      50% { box-shadow: 0 0 15px #FF007A, 0 0 20px #FFFFFF; }
+      100% { box-shadow: 0 0 10px #FF007A; }
+    }
+
+    /* Section contact */
+    .contact {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-size: 48px;
+      margin-bottom: 40px;
+      color: #00D4FF;
+      text-shadow: 0 0 10px #00D4FF;
+    }
+
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .contact-form, .contact-info {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(5px);
+    }
+
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #00D4FF;
+      border-radius: 5px;
+      color: #FFFFFF;
+      font-size: 16px;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    .contact-form input:focus, .contact-form textarea:focus {
+      outline: none;
+      border: 1px solid #FF007A;
+      box-shadow: 0 0 10px #FF007A;
+    }
+
+    .contact-form textarea {
+      height: 150px;
+      resize: vertical;
+    }
+
+    .contact-form button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #FF007A;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #FF007A;
+      animation: sparkle 2s infinite;
+    }
+
+    .contact-form button:hover {
+      background: #25D366;
+      box-shadow: 0 0 15px #25D366;
+      transform: scale(1.1);
+    }
+
+    .contact-info h3 {
+      font-size: 24px;
+      color: #FF007A;
+      text-shadow: 0 0 5px #FF007A;
+      margin-bottom: 20px;
+    }
+
+    .contact-info p {
+      font-size: 16px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contact-info p i {
+      color: #00D4FF;
+      font-size: 20px;
+    }
+
+    .contact-info a {
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-info a:hover {
+      color: #FF007A;
+    }
+
+    /* Bouton WhatsApp fixe */
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px;
+      background: #25D366;
+      color: #FFFFFF;
+      border-radius: 50%;
+      font-size: 24px;
+      box-shadow: 0 0 10px #25D366;
+      text-decoration: none;
+      animation: vibrate 2s infinite;
+      z-index: 100;
+    }
+
+    @keyframes vibrate {
+      0% { transform: translateX(0); }
+      10% { transform: translateX(-2px); }
+      20% { transform: translateX(2px); }
+      30% { transform: translateX(-2px); }
+      40% { transform: translateX(2px); }
+      50% { transform: translateX(0); }
+    }
+
+    /* Particules */
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+
+      .products h2, .contact h2 {
+        font-size: 32px;
+      }
+
+      .product-grid, .contact-container {
+        grid-template-columns: 1fr;
+      }
+
+      .intro-banner .logo {
+        font-size: 48px;
+      }
+
+      .intro-banner .slogan {
+        font-size: 24px;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Bannière d'entrée -->
+  <div class="intro-banner" id="introBanner">
+    <div class="logo">Puffs Century</div>
+    <div class="slogan">Vapez l'Avenir !</div>
+    <a href="#" class="enter-btn" id="enterBtn">Entrer</a>
+  </div>
+
+  <div id="background"></div>
+  <div id="particles-js"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Puffs Century</div>
+    <ul>
+      <li><a href="#home">Accueil</a></li>
+      <li><a href="#products">Produits</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Section héroïque -->
+  <section class="hero" id="home">
+    <h1>Vapez l'Avenir !</h1>
+    <p>Découvrez nos puffs au design futuriste et aux saveurs explosives</p>
+    <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20puff%20!" class="cta">Commander Maintenant</a>
+  </section>
+
+  <!-- Section produits -->
+  <section class="products" id="products">
+    <h2>Nos Puffs</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="img6.png" alt="Puff Neon">
+        <h3>Puff Neon</h3>
+        <div class="price">6 500 FCFA</div>
+        <p>Fruité éclatant</p>
+        <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20Puff%20Neon%20à%206500%20FCFA%20!" class="order-btn">Commander</a>
+      </div>
+      <div class="product-card">
+        <img src="img4.png" alt="Puff Cosmic">
+        <h3>Puff Cosmic</h3>
+        <div class="price">6 900 FCFA</div>
+        <p>Tropical intense</p>
+        <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20Puff%20Cosmic%20à%206900%20FCFA%20!" class="order-btn">Commander</a>
+      </div>
+      <div class="product-card">
+        <img src="img5.png" alt="Puff Galaxy">
+        <h3>Puff Galaxy</h3>
+        <div class="price">5 900 FCFA</div>
+        <p>Menthe glacée</p>
+        <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20Puff%20Galaxy%20à%205900%20FCFA%20!" class="order-btn">Commander</a>
+      </div>
+      <div class="product-card">
+        <img src="img6.png" alt="Puff Starlight">
+        <h3>Puff Starlight</h3>
+        <div class="price">7 400 FCFA</div>
+        <p>Vanille douce</p>
+        <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20Puff%20Starlight%20à%207400%20FCFA%20!" class="order-btn">Commander</a>
+      </div>
+      <div class="product-card">
+        <img src="img5.png" alt="Puff Nova">
+        <h3>Puff Nova</h3>
+        <div class="price">7 900 FCFA</div>
+        <p>Citrus vibrant</p>
+        <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20Puff%20Nova%20à%207900%20FCFA%20!" class="order-btn">Commander</a>
+      </div>
+      <div class="product-card">
+        <img src="img6.png" alt="Puff Orbit">
+        <h3>Puff Orbit</h3>
+        <div class="price">7 200 FCFA</div>
+        <p>Baies juteuses</p>
+        <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20Puff%20Orbit%20à%207200%20FCFA%20!" class="order-btn">Commander</a>
+      </div>
+      <div class="product-card">
+        <img src="img5.png" alt="Puff Plasma">
+        <h3>Puff Plasma</h3>
+        <div class="price">8 900 FCFA</div>
+        <p>Mangue électrisée</p>
+        <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20Puff%20Plasma%20à%208900%20FCFA%20!" class="order-btn">Commander</a>
+      </div>
+      <div class="product-card">
+        <img src="img4.png" alt="Puff Aurora">
+        <h3>Puff Aurora</h3>
+        <div class="price">6 200 FCFA</div>
+        <p>Pomme scintillante</p>
+        <a href="https://wa.me/655883830?text=Je%20veux%20commander%20une%20Puff%20Aurora%20à%206200%20FCFA%20!" class="order-btn">Commander</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section contact -->
+  <section class="contact" id="contact">
+    <h2>Contactez-nous !</h2>
+    <div class="contact-container">
+      <div class="contact-form">
+        <form id="contactForm">
+          <input type="text" id="name" placeholder="Votre nom" required>
+          <input type="email" id="email" placeholder="Votre e-mail" required>
+          <textarea id="message" placeholder="Votre message" required></textarea>
+          <button type="submit">Envoyer</button>
+        </form>
+      </div>
+      <div class="contact-info">
+        <h3>Nos coordonnées</h3>
+        <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/1234567890">+123 456 7890</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:contact@puffscentury.com">contact@puffscentury.com</a></p>
+        <p><i class="fas fa-map-marker-alt"></i> 123 Rue Futuriste, Douala, Cameroun</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bouton WhatsApp fixe -->
+  <a href="https://wa.me/1234567890?text=Je%20veux%20commander%20une%20puff%20!" class="whatsapp-btn">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 100, density: { enable: true, value_area: 800 } },
+        color: { value: "#00D4FF" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: "#8B00FF", opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out" }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+      },
+      retina_detect: true
+    });
+
+    // Gestion de la bannière d'entrée
+    document.getElementById('enterBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('introBanner').classList.add('hidden');
+    });
+
+    // Gestion du formulaire de contact
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const whatsappMessage = `Message de ${name} (${email}) : ${message}`;
+      const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(whatsappMessage)}`;
+      window.open(whatsappUrl, '_blank');
+      this.reset(); // Réinitialiser le formulaire
+    });
+  </script>
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>
